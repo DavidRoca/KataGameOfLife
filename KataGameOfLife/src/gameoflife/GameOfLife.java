@@ -1,5 +1,9 @@
 package gameoflife;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class GameOfLife {
@@ -7,24 +11,43 @@ public class GameOfLife {
 	private boolean[][] tablero;
 	
 	/**
-	 * Constructor. Crea un tablero finito de tipo booleano
-	 * dadas las dimensiones pasadas como parámetros y lo inicializa a 'false'.
+	 * Método constructor. Crea un tablero finito de tipo booleano
+	 * dados los datos pasados a través del fichero pasado como argumento.
 	 * 
-	 * @param filas 
-	 * @param columnas
+	 * @param fichero 
+	 * @throws IOException 
 	 */
-	public GameOfLife(int filas, int columnas){
+	public GameOfLife(String fichero) throws IOException{
 		
-		tablero = new boolean[filas][columnas];
+		FileReader input = null;
+		try {
+			input = new FileReader(fichero);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");;
+		}
+		BufferedReader bufRead = new BufferedReader(input);
+		String myLine = bufRead.readLine();
+		//System.out.println("Dimensions: "+ myLine);
+		String[] parsedLine = myLine.split(" ");
 		
-		for(boolean[] b:tablero){
-			Arrays.fill(b,false);
+		tablero = new boolean[Integer.parseInt(parsedLine[0])][Integer.parseInt(parsedLine[1])];
+		
+		int i= 0;
+		while ( (myLine = bufRead.readLine()) != null){
+		    for (int j = 0; j < myLine.length(); j++) {
+		    	if(myLine.charAt(j) == '*'){
+		    		tablero[i][j] = false;
+		    	}else{
+		    		tablero[i][j] = true;
+		    	}
+		    }
+		    i++;
 		}
 		
 	}
 	
 	 /**
-	 * Dada una celda, devuelve el número de celdas adyacentes 'vivas'.
+	 * Método que, dada una celda, devuelve el número de celdas adyacentes 'vivas'.
 	 * 
 	 * @param row
 	 * @param column
@@ -57,6 +80,46 @@ public class GameOfLife {
 		return fila >= 0 && col >= 0 && fila < tablero.length && col < tablero[0].length && tablero[fila][col];
 	}
 	
+	public void siguienteTurno() {
+		boolean[][] siguienteTablero = new boolean[tablero.length][tablero[0].length];
+		
+		 for (int x = 0; x < tablero.length; x++) {
 
+	            for (int y = 0; y < tablero[0].length; y++) {
+	            	
+	            }
+		 }
+		 
+		 tablero = siguienteTablero.clone();
+	}
+
+	public String toString() {
+		String cadena = "";
+		
+		for(int i=0; i<tablero.length; i++){
+		    for (int j = 0; j < tablero[i].length; j++) {
+		    	if(tablero[i][j]== true){
+		    		cadena += "*";
+		    	}else{
+		    		cadena += ".";
+		    	}
+		    }
+		    cadena += "\n";
+			
+		}
+		
+		return cadena;
+	} 
+	
+	public static void main(String[] args) throws IOException {
+		
+		
+		GameOfLife partida = new GameOfLife(args[0]);
+		
+		System.out.println(partida);
+		
+		
+		
+	}
 
 }
