@@ -124,7 +124,7 @@ public class GameOfLife {
 			
 		}
 		
-		return cadena;
+		return cadena; 
 	} 
 	
 	public static void main(String[] args) throws IOException {
