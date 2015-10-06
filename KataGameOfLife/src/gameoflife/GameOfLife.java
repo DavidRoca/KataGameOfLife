@@ -27,7 +27,6 @@ public class GameOfLife {
 		}
 		BufferedReader bufRead = new BufferedReader(input);
 		String myLine = bufRead.readLine();
-		//System.out.println("Dimensions: "+ myLine);
 		String[] parsedLine = myLine.split(" ");
 		
 		tablero = new boolean[Integer.parseInt(parsedLine[0])][Integer.parseInt(parsedLine[1])];
@@ -36,9 +35,9 @@ public class GameOfLife {
 		while ( (myLine = bufRead.readLine()) != null){
 		    for (int j = 0; j < myLine.length(); j++) {
 		    	if(myLine.charAt(j) == '*'){
-		    		tablero[i][j] = false;
-		    	}else{
 		    		tablero[i][j] = true;
+		    	}else{
+		    		tablero[i][j] = false;
 		    	}
 		    }
 		    i++;
@@ -80,14 +79,31 @@ public class GameOfLife {
 		return fila >= 0 && col >= 0 && fila < tablero.length && col < tablero[0].length && tablero[fila][col];
 	}
 	
+	/**
+	 * Método que genera el estado del siguiente turno.
+	 */
 	public void siguienteTurno() {
 		boolean[][] siguienteTablero = new boolean[tablero.length][tablero[0].length];
+		int vecinos = 0;
 		
 		 for (int x = 0; x < tablero.length; x++) {
-
-	            for (int y = 0; y < tablero[0].length; y++) {
-	            	
-	            }
+			 for (int y = 0; y < tablero[0].length; y++) {
+				 
+				 vecinos = cuentaVecinos(x, y);
+				 
+				 if(tablero[x][y]){
+					 if(vecinos == 2 || vecinos == 3){
+						 siguienteTablero[x][y] = true; 
+					 }else{
+						 siguienteTablero[x][y] = false; 
+					 }
+				 }else{
+					 if(vecinos == 3){
+						 siguienteTablero[x][y] = true;
+					 }
+				 }
+				 
+			 }
 		 }
 		 
 		 tablero = siguienteTablero.clone();
@@ -115,6 +131,10 @@ public class GameOfLife {
 		
 		
 		GameOfLife partida = new GameOfLife(args[0]);
+		
+		System.out.println(partida);
+		
+		partida.siguienteTurno();
 		
 		System.out.println(partida);
 		
